@@ -56,6 +56,16 @@
     z-index: 1;
 }
 
+.content-link {
+    color: #7cb5e9;
+    text-decoration: none;
+    font-weight: bolder;
+}
+
+.content-link:hover {
+    text-decoration-line: underline;
+}
+
 body {
     font-family: 'Courier New', Courier, monospace;
     display: flex;
