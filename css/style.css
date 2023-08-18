@@ -1,3 +1,16 @@
+/* carsonp.net css */
+
+/* Colors */
+:root {
+	--c-main: rgb(238, 233, 219);
+	--c-green: rgb(116, 231, 131);
+	--c-black: rgb(20, 20, 22);
+	--c-grad-pink: rgba(238,174,202,1);
+	--c-grad-lblue: rgba(148,187,233,1);
+	--c-grad-dblue: rgba(30,44,61,1);
+	--c-grad-purple: rgba(56,35,74,1);
+}
+
 /* Red 50 Regular Italic */
 @font-face {
 	font-family: 'Red 50';
@@ -20,7 +33,123 @@
 }
 
 
-body {
-    font-family: "CH Heavy";
-    font-size: 80px;
+html, body { height: 100%; margin: 0; padding: 0 }
+
+a {
+	color:var(--c-green);
+	font-family: "Mulish";
+	font-weight: 600;
+	text-decoration: underline;
+	text-decoration-color: var(--c-green);
+}
+
+/* Centering main content */
+
+.center {
+	max-width: 1000px;
+	height: 100%;
+	margin: 0 auto;
+	padding-left: 20px;
+	padding-right: 20px;
+
+}
+
+.down {
+	border-left-style: solid;
+	border-right-style: solid;
+	border-width: 1px;
+	border-color: black;
+	height: 100%;
+	background-color: var(--c-main)
+}
+
+
+/* Header with name and links*/
+
+.head {
+	display: grid;
+	grid-template-columns: 1fr 90px;
+	grid-template-rows: 90px;
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+	height: 90px;
+	position: relative;
+	border-bottom: 1px black solid;
+	background-color: var(--c-title);
+}
+
+#name {
+	grid-area: 1 / 1 / 2 / 2;
+	font-family: "Space Mono";
+	font-weight: 400;
+	font-size: 26px;
+	padding-left: 35px;
+	padding-top: 40px;
+	white-space: nowrap;
+}
+
+#github {
+	padding-top: 45px;
+	padding-left: 20px;
+	grid-area: 1 / 2 / 2 / 3;
+}
+
+/* Remove links when on small width*/
+
+@media only screen and (max-width: 400px) {
+    #github {
+        display: none;
+    }
+}
+
+
+/* Greeting section */
+
+.section1 {
+	background-color: var(--c-black);
+	padding: 35px;
+}
+
+#greeting {
+	color: var(--c-main);
+	font-family: "CH Heavy", sans-serif;
+	font-size: clamp(2.5rem, 0.68rem + 7.767vw, 5rem);
+}
+
+#sub-greet {
+	color: var(--c-main);
+	font-family: "Red 50";
+	font-size: clamp(1.25rem, 0.34rem + 3.883vw, 2.5rem);
+}
+
+
+/* About section */
+
+.section2 {
+	background: rgb(238,174,202);
+	background: linear-gradient(90deg, var(--c-grad-pink) 0%, var(--c-grad-lblue) 100%);
+	padding: 35px;
+	border-bottom: 1px black solid;
+	color: var(--c-black)
+}
+
+h1 {
+	font-family: "CH Heavy";
+	font-size: 26px;
+}
+
+p, ul {
+	font-family: 'Mulish';
+	font-weight: 300;
+	font-size: 24px;
+}
+
+
+/* Email and other stuff */
+.section3 {
+	background: rgb(30,44,61);
+	background: linear-gradient(90deg, var(--c-grad-dblue) 0%, var(--c-grad-purple) 100%);
+	padding: 35px;
+	border-bottom: 1px black solid;
+	color: var(--c-main)
 }
