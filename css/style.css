@@ -114,7 +114,8 @@ a {
 
 #sub-greet {
 	color: var(--c-main);
-	font-family: "Red 50";
+	font-family: "Red 50", serif;
+	font-style: italic;
 	font-size: clamp(1.25rem, 0.34rem + 3.883vw, 2.5rem);
 }
 
