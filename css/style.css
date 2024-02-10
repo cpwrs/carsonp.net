@@ -41,7 +41,7 @@ a {
 
 h1 {
   font-family: "Red 50 Italic";
-  font-size: 14px;
+  font-size: 25px;
 }
 
 /* Centering main content */
@@ -56,12 +56,12 @@ h1 {
 /* For text to center within sections of the page. */
 .inner {
   margin: auto;
-  max-width: 400px;
+  max-width: 700px;
   padding: 30px;
   padding-top: 15px;
   padding-bottom: 0px;
   font-family: "Red", serif;
-  font-size: 10px;
+  font-size: 18px;
 }
 
 #title-padding {
@@ -78,12 +78,12 @@ h1 {
 #greeting {
   font-family: "Red 50 Bold", sans-serif;
   letter-spacing: -.15rem;
-  font-size: 30px;
+  font-size: 50px;
 }
 
 #sub-greet {
   font-family: "Red 50 Italic", serif;
   font-style: italic;
-  font-size: 14px; 
+  font-size: 25px; 
 }
 
