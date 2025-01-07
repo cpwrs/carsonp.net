@@ -27,7 +27,7 @@ query($userName:String!) {
 """
 
 # Endpoint to retrieve my contributions
-@app.get("/api/contrubtions")
+@app.get("/api/contributions")
 async def get_contributions():
   async with httpx.AsyncClient() as client:
     response = await client.post(
