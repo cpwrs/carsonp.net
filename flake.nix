@@ -13,6 +13,7 @@
             nil
             python3
             pyright
+            typescript-language-server
             python3Packages.fastapi
             python3Packages.uvicorn
             python3Packages.requests
