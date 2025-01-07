@@ -1,1 +1,1 @@
-Frontend for my personal website carsonp.net
+Full stack for my personal website carsonp.net

@@ -15,6 +15,8 @@
             pyright
             python3Packages.fastapi
             python3Packages.uvicorn
+            python3Packages.requests
+            python3Packages.httpx
           ];
         };
       };
