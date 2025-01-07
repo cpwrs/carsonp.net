@@ -9,10 +9,12 @@
       systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       perSystem = { config, self', inputs', pkgs, system, ... }: {
         devShells.default = pkgs.mkShell {
-          packages = [
-            pkgs.nil
-              pkgs.jq
-              pkgs.deno
+          packages = with pkgs; [
+            nil
+            python3
+            pyright
+            python3Packages.fastapi
+            python3Packages.uvicorn
           ];
         };
       };
