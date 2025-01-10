@@ -30,7 +30,7 @@
     };
   };
 
-  # Start app with a systemd service
+  # Start app locally with a systemd service
   systemd.services.web-app = {
     description = "Start carsonp.net HTTP server";
     after = [ "network.target" ];
@@ -45,15 +45,37 @@
           uvicorn 
           httpx 
         ]); 
-        in "${python}/bin/uvicorn backend:app --host 0.0.0.0 --port 80";
+        in "${python}/bin/uvicorn backend:app --host 127.0.0.0 --port 8000";
       WorkingDirectory = "${web-app}/lib";
-      AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
-      CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
       EnvironmentFile = "/etc/web-app.env";
     };
   };
 
-  # Allow SSH, HTTPS, HTTP
+  services.nginx = {
+    enable = true;
+
+    virtualHosts."carsonp.net" = {
+      enableACME = true;
+      forceSSL = true;
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8000";
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Real_IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+        '';
+      };
+    };
+  };
+
+  security.ACME = {
+    acceptTerms = true;
+    defaults.email = "crpowers0@gmail.com";
+  };
+
+  # Allow SSH, HTTPS, HTTP connections
   networking = {
     firewall = {
       enable = true;
