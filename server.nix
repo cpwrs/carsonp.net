@@ -1,4 +1,11 @@
 { modulesPath, pkgs, web-app, ... }:
+
+let
+  port = "8000";
+  host = "127.0.0.1";
+  domain = "carsonp.net";
+  email = "me@carsonp.net";
+in
 {  
   imports = [ "${modulesPath}/virtualisation/amazon-image.nix" ];
 
@@ -45,21 +52,22 @@
           uvicorn 
           httpx 
         ]); 
-        in "${python}/bin/uvicorn backend:app --host 127.0.0.0 --port 8000";
+        in "${python}/bin/uvicorn backend:app --host ${host} --port ${port}";
       WorkingDirectory = "${web-app}/lib";
       EnvironmentFile = "/etc/web-app.env";
     };
   };
 
+  # Reverse proxy to route traffic to app @ 127.0.0.0:8000
   services.nginx = {
     enable = true;
 
-    virtualHosts."carsonp.net" = {
+    virtualHosts.${domain} = {
       enableACME = true;
       forceSSL = true;
 
       locations."/" = {
-        proxyPass = "http://127.0.0.1:8000";
+        proxyPass = "http://${host}:${port}";
         extraConfig = ''
           proxy_set_header Host $host;
           proxy_set_header X-Real_IP $remote_addr;
@@ -70,9 +78,10 @@
     };
   };
 
-  security.ACME = {
+  # Auto domain validation and certificate retrieval with Let's Encrypt
+  security.acme = {
     acceptTerms = true;
-    defaults.email = "crpowers0@gmail.com";
+    defaults.email = email;
   };
 
   # Allow SSH, HTTPS, HTTP connections
