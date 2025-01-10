@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+import uvicorn
 import httpx
 import os
 
@@ -45,3 +46,7 @@ async def get_contributions():
 
 # Serve the website frontend
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
+
+# Run
+# if __name__ == "__main__":
+#   uvicorn.run(app, host="0.0.0.0", port=8000)
