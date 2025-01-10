@@ -11,9 +11,10 @@
     '';
   };
 
-  # Add app dependencies
+  # Server utils
   environment.systemPackages = with pkgs; [
-    vim 
+    vim
+    git
   ];
 
   # Add me to ssh
@@ -48,6 +49,7 @@
       WorkingDirectory = "${web-app}/lib";
       AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
       CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
+      EnvironmentFile = "/etc/web-app.env";
     };
   };
 
