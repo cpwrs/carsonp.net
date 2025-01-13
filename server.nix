@@ -2,7 +2,7 @@
 
 let
   port = "8000";
-  host = "127.0.0.1";
+  loopback = "127.0.0.1";
   domain = "carsonp.net";
   email = "me@carsonp.net";
 in
@@ -52,7 +52,7 @@ in
           uvicorn 
           httpx 
         ]); 
-        in "${python}/bin/uvicorn backend:app --host ${host} --port ${port}";
+        in "${python}/bin/uvicorn backend:app --host ${loopback} --port ${port}";
       WorkingDirectory = "${web-app}/lib";
       EnvironmentFile = "/etc/web-app.env";
     };
@@ -67,7 +67,7 @@ in
       forceSSL = true;
 
       locations."/" = {
-        proxyPass = "http://${host}:${port}";
+        proxyPass = "http://${loopback}:${port}";
         extraConfig = ''
           proxy_set_header Host $host;
           proxy_set_header X-Real_IP $remote_addr;
