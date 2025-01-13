@@ -1,4 +1,4 @@
-{ modulesPath, pkgs, web-app, ... }:
+{ modulesPath, pkgs, web-app, python-env, ... }:
 
 let
   port = "8000";
@@ -46,13 +46,7 @@ in
     serviceConfig = {
       User = "carson";
       Group = "users";
-      ExecStart = let
-        python = pkgs.python3.withPackages (ps: with ps; [
-          fastapi 
-          uvicorn 
-          httpx 
-        ]); 
-        in "${python}/bin/uvicorn backend:app --host ${loopback} --port ${port}";
+      ExecStart = "${python-env}/bin/uvicorn backend:app --host ${loopback} --port ${port}";
       WorkingDirectory = "${web-app}/lib";
       EnvironmentFile = "/etc/web-app.env";
     };
@@ -84,7 +78,7 @@ in
     defaults.email = email;
   };
 
-  # Allow SSH, HTTPS, HTTP connections
+  # Allow HTTP, HTTPS, SSH connections
   networking = {
     firewall = {
       enable = true;

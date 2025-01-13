@@ -7,17 +7,19 @@
     let 
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      python-env = pkgs.python3.withPackages (ps: with ps; [
+        fastapi 
+        uvicorn 
+        httpx 
+      ]); 
     in {
       # Dev shell for testing app
       devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [
           nil
-          python3
           pyright
           typescript-language-server
-          python3Packages.fastapi
-          python3Packages.uvicorn
-          python3Packages.httpx
+          python-env
         ];
       };
       
@@ -36,7 +38,10 @@
       # Server OS configuration for EC2 instance
       nixosConfigurations.server = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = { web-app = self.packages.${system}.default; };
+        specialArgs = { 
+          inherit python-env;
+          web-app = self.packages.${system}.default; 
+        };
         modules = [ ./server.nix ];
       };
     };
