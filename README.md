@@ -8,7 +8,8 @@ Production: For slow instances, build the OS locally and deploy to EC2:
 ```bash
 nixos-rebuild --target-host root@instance-ip --flake .#server switch
 ```
-This NixOS config sets up nginx, grabs Let's Encrypt certificates, opens TCP ports, and defines a systemd service to start the web app. All it depends on imperatively is a web-app.env on the server for any secrets the API uses.
+Depends on `/etc/web-app.env` holding all secrets. 
+This NixOS config sets up nginx, grabs Let's Encrypt certificates, opens TCP ports, and defines a systemd service to start the web app.
 
 Development:
 Enter the `devShell` provided in the nix flake, then deploy locally:
