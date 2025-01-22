@@ -1,0 +1,59 @@
+/* Berkeley Mono Font */
+@font-face {
+  font-family: "Berkeley Mono";
+  src: url("/assets/fonts/BerkeleyMono-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Berkeley Mono Bold";
+  src: url("/assets/fonts/BerkeleyMono-Bold.woff2") format("woff2");
+  font-style: bold;
+}
+
+/* Contribution Scrolling Animation */
+@keyframes scrolling {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Set variables */
+:root {
+  --global-background: #fffcf4;
+}
+
+/* Set body color and no margin */
+body {
+  background-color: var(--global-background);
+  margin: 0px;
+}
+
+/* Make the contribution carousel animate */
+svg {
+  display: flex;
+  will-change: transform;
+  animation: scrolling 10s linear infinite;
+}
+
+/* Make a wrapper for all content to be centered */
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Correct display for contribution carousel */
+#contributions {
+  overflow: hidden;
+  display: flex;
+  > * { flex: 0 0 100%; }
+}
+
+/* Fun title text */
+#title {
+  font-family: "Berkeley Mono";
+  font-size: 40px;
+}
+#titlebold {
+  font-family: "Berkeley Mono Bold";
+  font-size: 40px;

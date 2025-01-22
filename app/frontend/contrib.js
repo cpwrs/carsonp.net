@@ -14,17 +14,21 @@ function maxCount(contribs) {
   return max;
 }
 
-const LOW_COLOR = { r: 255, b: 255, g: 255 }
-const HIGH_COLOR = { r: 33, b: 110, g: 57 }
+const NO_COLOR = { r: 255, g: 252, b: 246 }
+const LOW_COLOR = { r: 230, g: 250, b: 234 }
+const HIGH_COLOR = { r: 33, g: 110, b: 57 }
 
 // Interpolate a color between LOW and HIGH based on one days contrib count, and the yearly max
 function getColor(count, max) {
-  percent = count / max;
-  const r = Math.round(LOW_COLOR.r + (HIGH_COLOR.r - LOW_COLOR.r) * percent);
-  const b = Math.round(LOW_COLOR.b + (HIGH_COLOR.b - LOW_COLOR.b) * percent);
-  const g = Math.round(LOW_COLOR.g + (HIGH_COLOR.g - LOW_COLOR.g) * percent);
+  if (count === 0) {  
+    return `rgb(${NO_COLOR.r}, ${NO_COLOR.g}, ${NO_COLOR.b})` 
+  }
 
-  return `rgb(${r}, ${b}, ${g})`;
+  const percent = count / max;
+  const r = Math.round(LOW_COLOR.r + (HIGH_COLOR.r - LOW_COLOR.r) * percent);
+  const g = Math.round(LOW_COLOR.g + (HIGH_COLOR.g - LOW_COLOR.g) * percent);
+  const b = Math.round(LOW_COLOR.b + (HIGH_COLOR.b - LOW_COLOR.b) * percent);
+  return `rgb(${r}, ${g}, ${b})`;
 }
 
 // Fetch GitHub contributions from API 
@@ -42,8 +46,8 @@ async function fetchContributions() {
   }
 }
 
-const BOX_SIZE = 12;
-const BOX_GAP = 2;
+const BOX_SIZE = 40;
+const BOX_GAP = 0;
 const CORNER_RADIUS = 2;
 const STROKE_COLOR = "#e0e0e0";
 const STROKE_WIDTH = 1;
@@ -57,10 +61,10 @@ function createBox(x, y, color) {
   box.setAttribute("width", BOX_SIZE);
   box.setAttribute("height", BOX_SIZE);
   box.setAttribute("fill", color);
-  box.setAttribute("rx", CORNER_RADIUS);
-  box.setAttribute("ry", CORNER_RADIUS);
-  box.setAttribute("stroke", STROKE_COLOR);
-  box.setAttribute("stroke-width", STROKE_WIDTH);
+  // box.setAttribute("rx", CORNER_RADIUS);
+  // box.setAttribute("ry", CORNER_RADIUS);
+  // box.setAttribute("stroke", STROKE_COLOR);
+  // box.setAttribute("stroke-width", STROKE_WIDTH);
 
   return box;
 }
@@ -71,8 +75,10 @@ function createContribGraph(contribs) {
   const height = 7 * GRAPH_CELL;
 
   const graph = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  graph.setAttribute("width", width);
-  graph.setAttribute("height", height);
+  graph.style.width = "100%";
+  graph.style.height = "100%";
+  // graph.setAttribute("width", width);
+  // graph.setAttribute("height", height);
   graph.setAttribute("viewBox", `0 0 ${width} ${height}`);
 
   let max = maxCount(contribs);
@@ -94,8 +100,16 @@ async function init() {
   try {
     const contributions = await fetchContributions();
     const contribDiv = document.getElementById("contributions");
+
+    // Create two graphs, for a rotating carousel effect
     const graph = createContribGraph(contributions);
+    const clone = graph.cloneNode(true);
+    const container = document.getElementById('contributions');
+
     contribDiv.appendChild(graph);
+    // Second one should be hidden for now
+    clone.setAttribute("aria-hidden", true);
+    contribDiv.appendChild(clone);
   } catch (error) {
     console.error("Failed to create the contributions graph:", error);
   }
