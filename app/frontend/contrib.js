@@ -75,10 +75,7 @@ function createContribGraph(contribs) {
   const height = 7 * GRAPH_CELL;
 
   const graph = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  graph.style.width = "100%";
   graph.style.height = "100%";
-  // graph.setAttribute("width", width);
-  // graph.setAttribute("height", height);
   graph.setAttribute("viewBox", `0 0 ${width} ${height}`);
 
   let max = maxCount(contribs);

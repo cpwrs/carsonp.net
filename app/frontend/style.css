@@ -44,6 +44,8 @@ svg {
 
 /* Correct display for contribution carousel */
 #contributions {
+  box-sizing: border-box;
+  width: 250vh;
   overflow: hidden;
   display: flex;
   > * { flex: 0 0 100%; }
@@ -52,8 +54,8 @@ svg {
 /* Fun title text */
 #title {
   font-family: "Berkeley Mono";
-  font-size: 40px;
+  font-size: 30px;
 }
 #titlebold {
   font-family: "Berkeley Mono Bold";
-  font-size: 40px;
+  font-size: 30px;
