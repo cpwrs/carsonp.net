@@ -9,15 +9,13 @@
   font-style: bold;
 }
 
-/* Contribution Scrolling Animation */
-@keyframes scrolling {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
-
 /* Set variables */
 :root {
   --global-background: #fffcf4;
+}
+
+html {
+  font-size: 20px;
 }
 
 /* Set body color and no margin */
@@ -26,26 +24,32 @@ body {
   margin: 0px;
 }
 
+/* Contribution Scrolling Animation */
+@keyframes scrolling {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
 /* Make the contribution carousel animate */
 svg {
   display: flex;
   will-change: transform;
-  animation: scrolling 10s linear infinite;
+  animation: scrolling 15s linear infinite;
 }
 
 /* Make a wrapper for all content to be centered */
 .content {
   max-width: 800px;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 25px;
   width: 100%;
-  box-sizing: border-box;
+  box-sizing: content-box;
 }
 
 /* Correct display for contribution carousel */
 #contributions {
   box-sizing: border-box;
-  width: 250vh;
+  width: 200vh;
   overflow: hidden;
   display: flex;
   > * { flex: 0 0 100%; }
@@ -54,8 +58,6 @@ svg {
 /* Fun title text */
 #title {
   font-family: "Berkeley Mono";
-  font-size: 30px;
 }
 #titlebold {
   font-family: "Berkeley Mono Bold";
-  font-size: 30px;
