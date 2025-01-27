@@ -12,16 +12,31 @@
 /* Set variables */
 :root {
   --global-background: #fffcf4;
+  --pink: #ffb1f5;
+  --purple: #d19cff;
+  --green: #89ffcb;
+  
 }
 
 html {
-  font-size: 20px;
+  font-size: 16px;
+  overflow: hidden;
+  font-family: "Berkeley Mono";
 }
 
 /* Set body color and no margin */
 body {
   background-color: var(--global-background);
   margin: 0px;
+  overflow: hidden;
+}
+
+.bold {
+  font-family: "Berkeley Mono Bold";
+}
+
+a {
+  color: var(--purple);
 }
 
 /* Contribution Scrolling Animation */
@@ -43,7 +58,22 @@ svg {
   margin: 0 auto;
   padding: 25px;
   width: 100%;
-  box-sizing: content-box;
+  box-sizing: border-box;
+}
+.content > div {
+  margin-bottom: 30px; 
+}
+
+/* Footer for contact info */
+.footer {
+  position: fixed;
+  bottom: 0;
+  margin: 0 auto;
+  width: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+  text-align: center;
+  box-shadow: 0 -1px 3px rgba(0,0,0,0.1)
 }
 
 /* Correct display for contribution carousel */
@@ -56,8 +86,20 @@ svg {
 }
 
 /* Fun title text */
-#title {
-  font-family: "Berkeley Mono";
+#topnav {
+  overflow: hidden; 
 }
-#titlebold {
-  font-family: "Berkeley Mono Bold";
+#topnav a {
+  float: right;
+  padding: 0 8px;
+}
+/* Website title (on left) */
+#title {
+  font-size: 20px;
+  float: left;
+}
+/* Biography */
+.bio {
+  padding-left: 10px;
+  padding-right: 10px;
+}
