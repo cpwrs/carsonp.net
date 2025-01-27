@@ -12,10 +12,7 @@
 /* Set variables */
 :root {
   --global-background: #fffcf4;
-  --pink: #ffb1f5;
   --purple: #d19cff;
-  --green: #89ffcb;
-  
 }
 
 html {
@@ -24,7 +21,6 @@ html {
   font-family: "Berkeley Mono";
 }
 
-/* Set body color and no margin */
 body {
   background-color: var(--global-background);
   margin: 0px;
@@ -53,53 +49,36 @@ svg {
 }
 
 /* Make a wrapper for all content to be centered */
-.content {
+.wrapper {
   max-width: 800px;
   margin: 0 auto;
   padding: 25px;
   width: 100%;
   box-sizing: border-box;
 }
-.content > div {
+/* Add distance between sections of content */
+.wrapper > div {
   margin-bottom: 30px; 
-}
-
-/* Footer for contact info */
-.footer {
-  position: fixed;
-  bottom: 0;
-  margin: 0 auto;
-  width: 100%;
-  padding: 15px;
-  box-sizing: border-box;
-  text-align: center;
-  box-shadow: 0 -1px 3px rgba(0,0,0,0.1)
 }
 
 /* Correct display for contribution carousel */
 #contributions {
   box-sizing: border-box;
-  width: 200vh;
+  width: 250vh;
   overflow: hidden;
   display: flex;
   > * { flex: 0 0 100%; }
 }
+/* Link to GitHub under contrib graph */
+#contribtext {
+  font-size: 12px;
+  text-align: right;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 
-/* Fun title text */
-#topnav {
-  overflow: hidden; 
-}
-#topnav a {
-  float: right;
-  padding: 0 8px;
-}
-/* Website title (on left) */
+/* Website title */
 #title {
-  font-size: 20px;
+  font-size: 28px;
   float: left;
-}
-/* Biography */
-.bio {
-  padding-left: 10px;
-  padding-right: 10px;
 }
