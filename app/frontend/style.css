@@ -50,35 +50,33 @@ svg {
 
 /* Make a wrapper for all content to be centered */
 .wrapper {
-  max-width: 800px;
+  max-width: 650px;
   margin: 0 auto;
-  padding: 25px;
+  padding-top: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   width: 100%;
   box-sizing: border-box;
-}
-/* Add distance between sections of content */
-.wrapper > div {
-  margin-bottom: 30px; 
+  /* Add distance between sections of content */
+  > div { 
+    margin-bottom: 30px;
+  }
 }
 
 /* Correct display for contribution carousel */
 #contributions {
   box-sizing: border-box;
-  width: 250vh;
+  width: 200vh;
   overflow: hidden;
   display: flex;
   > * { flex: 0 0 100%; }
 }
-/* Link to GitHub under contrib graph */
-#contribtext {
-  font-size: 12px;
-  text-align: right;
-  padding-top: 0;
-  padding-bottom: 0;
+/* Some text to diplay close to the contribution graph */
+#contribution-text {
+  margin-bottom: 0px;
 }
 
 /* Website title */
 #title {
   font-size: 28px;
-  float: left;
 }
