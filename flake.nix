@@ -7,7 +7,7 @@
     let 
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-      python-env = pkgs.python3.withPackages (ps: with ps; [
+      env = pkgs.python3.withPackages (ps: with ps; [
         fastapi 
         uvicorn 
         httpx 
@@ -19,13 +19,13 @@
           nil
           pyright
           typescript-language-server
-          python-env
+          env
         ];
       };
       
-      # Make the app code available to the server as a derivation
+      # Make the source code available to the server as a derivation
       packages.${system}.default = pkgs.stdenv.mkDerivation {
-        name = "web-app";
+        name = "source";
         src = ./app;
 
         installPhase = ''
@@ -39,8 +39,8 @@
       nixosConfigurations.server = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { 
-          inherit python-env;
-          web-app = self.packages.${system}.default; 
+          inherit env;
+          source = self.packages.${system}.default; 
         };
         modules = [ ./server.nix ];
       };

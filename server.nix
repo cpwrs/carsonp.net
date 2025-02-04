@@ -1,7 +1,7 @@
-{ modulesPath, pkgs, web-app, python-env, ... }:
+{ modulesPath, pkgs, source, env, ... }:
 
 let
-  port = "8000";
+  port = 8000;
   loopback = "127.0.0.1";
   domain = "carsonp.net";
   email = "me@carsonp.net";
@@ -46,13 +46,13 @@ in
     serviceConfig = {
       User = "carson";
       Group = "users";
-      ExecStart = "${python-env}/bin/uvicorn backend:app --host ${loopback} --port ${port}";
-      WorkingDirectory = "${web-app}/lib";
+      ExecStart = "${env}/bin/uvicorn backend:app --host ${loopback} --port ${toString port}";
+      WorkingDirectory = "${source}/lib";
       EnvironmentFile = "/etc/web-app.env";
     };
   };
 
-  # Reverse proxy to route traffic to app @ 127.0.0.0:8000
+  # Reverse proxy to route traffic to app @ 127.0.0.1:8000
   services.nginx = {
     enable = true;
 
@@ -61,7 +61,7 @@ in
       forceSSL = true;
 
       locations."/" = {
-        proxyPass = "http://${loopback}:${port}";
+        proxyPass = "http://${loopback}:${toString port}";
         extraConfig = ''
           proxy_set_header Host $host;
           proxy_set_header X-Real_IP $remote_addr;
