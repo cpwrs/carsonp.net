@@ -1,30 +1,23 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    agenix = { url = "github:ryantm/agenix"; inputs.nixpkgs.follows = "nixpkgs"; };
   };
 
-  outputs = { self, nixpkgs, ... }:
+  outputs = { self, nixpkgs, agenix, ... }:
     let 
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+
+      # Python environment
       env = pkgs.python3.withPackages (ps: with ps; [
         fastapi 
         uvicorn 
         httpx 
       ]); 
-    in {
-      # Dev shell for testing app
-      devShells.${system}.default = pkgs.mkShell {
-        packages = with pkgs; [
-          nil
-          pyright
-          typescript-language-server
-          env
-        ];
-      };
-      
-      # Make the source code available to the server as a derivation
-      packages.${system}.default = pkgs.stdenv.mkDerivation {
+
+      # Source code
+      source = pkgs.stdenv.mkDerivation {
         name = "source";
         src = ./app;
 
@@ -34,15 +27,34 @@
           cp -r . $out/lib/
         '';
       };
+    in {
+      devShells.${system}.default = pkgs.mkShell {
+        packages = with pkgs; [
+          # Enrypting secrets
+          age
+          agenix.packages.${system}.default
 
+          # Language servers
+          nil
+          pyright
+          typescript-language-server
+
+          env
+        ];
+      };
+      
       # Server OS configuration for EC2 instance
       nixosConfigurations.server = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { 
+          # Make the source code and python env available to the server
           inherit env;
-          source = self.packages.${system}.default; 
+          inherit source;
         };
-        modules = [ ./server.nix ];
+        modules = [ 
+          agenix.nixosModules.default
+         ./server.nix 
+        ];
       };
     };
 }

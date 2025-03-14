@@ -1,10 +1,11 @@
-{ modulesPath, pkgs, source, env, ... }:
+{ modulesPath, pkgs, source, env, config, ... }:
 
 let
   port = 8000;
   loopback = "127.0.0.1";
   domain = "carsonp.net";
   email = "me@carsonp.net";
+  dotenv = config.age.secrets.env.path; 
 in
 {  
   imports = [ "${modulesPath}/virtualisation/amazon-image.nix" ];
@@ -37,6 +38,13 @@ in
     };
   };
 
+  # Decrypt env secrets
+  age.secrets = {
+    "env" = {
+      file = ./env.age;
+    };
+  };
+
   # Start app locally with a systemd service
   systemd.services.web-app = {
     description = "Start carsonp.net HTTP server";
@@ -48,7 +56,7 @@ in
       Group = "users";
       ExecStart = "${env}/bin/uvicorn backend:app --host ${loopback} --port ${toString port}";
       WorkingDirectory = "${source}/lib";
-      EnvironmentFile = "/etc/web-app.env";
+      EnvironmentFile = dotenv;
     };
   };
 
