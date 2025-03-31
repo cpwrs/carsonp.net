@@ -28,8 +28,6 @@
           cp -r . $out/lib/
         '';
       };
-
-      # Deploy script
     in {
       devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [
@@ -46,7 +44,7 @@
           pyenv
         ];
       };
-      
+
       # Server OS configuration for EC2 instance
       nixosConfigurations.server = nixpkgs.lib.nixosSystem {
         inherit system;

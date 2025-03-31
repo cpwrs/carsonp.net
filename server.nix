@@ -55,7 +55,7 @@ in
       User = "carson";
       Group = "users";
       ExecStart = "${pyenv}/bin/python3 backend.py --port ${toString port} --host ${loopback}";
-      WorkingDirectory = "${source}";
+      WorkingDirectory = "${source}/lib";
       EnvironmentFile = secrets; # For secret env vars 
       Environment = env; # For public env vars
     };
