@@ -1,10 +1,6 @@
 # carsonp.net
 
-Full stack personal website.
-
-## Deploy
-
-### Production
+### Deploy to Production
 For slow instances, build the OS locally and deploy to EC2: 
 ```bash
 nixos-rebuild --target-host root@instance-ip --flake .#server switch
