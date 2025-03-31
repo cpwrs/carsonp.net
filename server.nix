@@ -47,14 +47,14 @@ in
 
   # Start app locally with a systemd service
   systemd.services.web-app = {
-    description = "Start carsonp.net HTTP server";
+    description = "carsonp.net HTTP server";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
       User = "carson";
       Group = "users";
-      ExecStart = "${pyenv}/bin/python3 app/backend.py --port ${toString port} --host ${loopback}";
+      ExecStart = "${pyenv}/bin/python3 backend.py --port ${toString port} --host ${loopback}";
       WorkingDirectory = "${source}";
       EnvironmentFile = secrets; # For secret env vars 
       Environment = env; # For public env vars
