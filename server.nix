@@ -1,11 +1,11 @@
-{ modulesPath, pkgs, source, env, config, ... }:
+{ modulesPath, pkgs, source, pyenv, env, config, ... }:
 
 let
   port = 8000;
   loopback = "127.0.0.1";
   domain = "carsonp.net";
   email = "me@carsonp.net";
-  dotenv = config.age.secrets.env.path; 
+  secrets = config.age.secrets.env.path; # Path to decrypted secrets
 in
 {  
   imports = [ "${modulesPath}/virtualisation/amazon-image.nix" ];
@@ -38,7 +38,7 @@ in
     };
   };
 
-  # Decrypt env secrets
+  # Decrypt secret env vars 
   age.secrets = {
     "env" = {
       file = ./env.age;
@@ -54,9 +54,10 @@ in
     serviceConfig = {
       User = "carson";
       Group = "users";
-      ExecStart = "${env}/bin/uvicorn backend:app --host ${loopback} --port ${toString port}";
-      WorkingDirectory = "${source}/lib";
-      EnvironmentFile = dotenv;
+      ExecStart = "${pyenv}/bin/python3 app/backend.py --port ${toString port} --host ${loopback}";
+      WorkingDirectory = "${source}";
+      EnvironmentFile = secrets; # For secret env vars 
+      Environment = env; # For public env vars
     };
   };
 

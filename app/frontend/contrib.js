@@ -14,9 +14,9 @@ function maxCount(contribs) {
   return max;
 }
 
-const NO_COLOR = { r: 255, g: 252, b: 246 }
-const LOW_COLOR = { r: 230, g: 250, b: 234 }
-const HIGH_COLOR = { r: 33, g: 110, b: 57 }
+const NO_COLOR = { r: 28, g: 23, b: 20}
+const LOW_COLOR = { r: 32, g: 31, b: 26 }
+const HIGH_COLOR = { r: 137, g: 255, b: 203 }
 
 // Interpolate a color between LOW and HIGH based on one days contrib count, and the yearly max
 function getColor(count, max) {
@@ -33,23 +33,24 @@ function getColor(count, max) {
 
 // Fetch GitHub contributions from API 
 async function fetchContributions() {
-  try {
-    const response = await fetch('/api/contributions')
-    const data = await response.json();
-    const contributions = data.data.user.contributionsCollection.contributionCalendar;
+  const response = await fetch('/api/contributions')
 
-    return contributions.weeks.map(week =>
-      week.contributionDays.map(day => day.contributionCount)
-    );
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`);
   }
+
+  const data = await response.json();
+  const contributions = data.data.user.contributionsCollection.contributionCalendar;
+
+  return contributions.weeks.map(week =>
+    week.contributionDays.map(day => day.contributionCount)
+  );
 }
 
 const BOX_SIZE = 40;
 const BOX_GAP = 8;
 const CORNER_RADIUS = 5;
-const STROKE_COLOR = "#e0e0e0";
+const STROKE_COLOR = "#29221f";
 const STROKE_WIDTH = 1;
 const GRAPH_CELL = BOX_SIZE + BOX_GAP;
 
@@ -94,9 +95,9 @@ function createContribGraph(contribs) {
 }
 
 async function init() {
+  const container = document.getElementById("contributions");
   try {
     const contributions = await fetchContributions();
-    const container = document.getElementById("contributions");
 
     // Create two graphs, for a rotating carousel effect
     const graph = createContribGraph(contributions);
@@ -106,6 +107,7 @@ async function init() {
     container.appendChild(graph);
     container.appendChild(clone);
   } catch (error) {
+    if (container) container.remove();
     console.error("Failed to create the contributions graph:", error);
   }
 }

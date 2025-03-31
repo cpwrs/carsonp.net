@@ -8,23 +8,37 @@
   src: url("/assets/fonts/BerkeleyMono-Bold.woff2") format("woff2");
   font-style: bold;
 }
+@font-face {
+  font-family: "Berkeley Mono Italic";
+  src: url("/assets/fonts/BerkeleyMono-Italic.woff2") format("woff2");
+  font-style: italic;
+}
 
 /* Set variables */
 :root {
-  --global-background: #fffcf4;
+  --bg: #1c1714;
+  --fg: #f7f7f7;
+  --grey: #4d4544;
+  --pink: #ffb1f5;
   --purple: #d19cff;
+  --green: #538B70;
+  --red: #ff5766;
 }
 
 html {
   font-size: 16px;
   overflow-x: hidden;
   font-family: "Berkeley Mono";
+  background-color: var(--bg);
+  color: var(--fg);
 }
 
 body {
-  background-color: var(--global-background);
   margin: 0px;
   overflow-x: hidden;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 .bold {
@@ -32,7 +46,7 @@ body {
 }
 
 a {
-  color: var(--purple);
+  color: var(--pink);
 }
 
 /* Contribution Scrolling Animation */
@@ -59,8 +73,52 @@ svg {
   box-sizing: border-box;
   /* Add distance between sections of content */
   > div { 
-    margin-bottom: 30px;
+    padding-bottom: 30px;
   }
+}
+
+/* Add some space */
+.spacer {
+  padding-bottom: 50px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: var(--bg);
+}
+
+#footer-content {
+  max-width: 650px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 6px;
+  padding-bottom: 8px;
+  width: 100%;
+  box-sizing: border-box; text-align: right;
+  border-top: .1rem solid var(--grey);
+}
+
+#prod-tag {
+  border: .1rem solid var(--fg);
+  background-color: var(--green);
+  color: var(--fg);
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+#build-tag {
+  border: .1rem solid var(--fg);
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+#build-link {
+  font-family: "Berkeley Mono Italic";
+  /* color: var(--green); */
+  text-decoration: underline;
 }
 
 /* Correct display for contribution carousel */
@@ -70,10 +128,6 @@ svg {
   overflow: hidden;
   display: flex;
   > * { flex: 0 0 100%; }
-}
-/* Some text to diplay close to the contribution graph */
-#contribution-text {
-  margin-bottom: 0px;
 }
 
 /* Website title */

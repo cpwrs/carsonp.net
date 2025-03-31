@@ -8,9 +8,10 @@
     let 
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      lib = nixpkgs.lib;
 
       # Python environment
-      env = pkgs.python3.withPackages (ps: with ps; [
+      pyenv = pkgs.python3.withPackages (ps: with ps; [
         fastapi 
         uvicorn 
         httpx 
@@ -27,10 +28,12 @@
           cp -r . $out/lib/
         '';
       };
+
+      # Deploy script
     in {
       devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [
-          # Enrypting secrets
+          # Encrypting secrets
           age
           agenix.packages.${system}.default
 
@@ -38,8 +41,9 @@
           nil
           pyright
           typescript-language-server
-
-          env
+          
+          # Python app dependencies
+          pyenv
         ];
       };
       
@@ -47,13 +51,16 @@
       nixosConfigurations.server = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { 
-          # Make the source code and python env available to the server
-          inherit env;
+          # Make the source code and python env available to the server OS
+          inherit pyenv;
           inherit source;
+
+          # Production environment variables
+          env = lib.optional (self ? shortRev) "COMMIT=${self.shortRev}" ++ [ "PROD=1" ];
         };
         modules = [ 
           agenix.nixosModules.default
-         ./server.nix 
+          ./server.nix 
         ];
       };
     };
