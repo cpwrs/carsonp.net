@@ -10,7 +10,8 @@
 }
 @font-face {
   font-family: "Berkeley Mono Italic";
-  src: url("/assets/fonts/BerkeleyMono-Italic.woff2") format("woff2");
+  src: url("/assets/fonts/BerkeleyMono-Italic.woff2") format("woff2"),
+       url("/assets/fonts/BerkeleyMono-Italic.woff") format("woff");
   font-style: italic;
 }
 
@@ -94,7 +95,7 @@ svg {
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
-  padding-top: 6px;
+  padding-top: 8px;
   padding-bottom: 8px;
   width: 100%;
   box-sizing: border-box; text-align: right;
