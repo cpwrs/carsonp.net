@@ -2,16 +2,19 @@
 @font-face {
   font-family: "Berkeley Mono";
   src: url("/assets/fonts/BerkeleyMono-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }
 @font-face {
-  font-family: "Berkeley Mono Bold";
+  font-family: "Berkeley Mono";
   src: url("/assets/fonts/BerkeleyMono-Bold.woff2") format("woff2");
-  font-style: bold;
+  font-weight: bold;
+  font-style: normal;
 }
 @font-face {
-  font-family: "Berkeley Mono Italic";
-  src: url("/assets/fonts/BerkeleyMono-Italic.woff2") format("woff2"),
-       url("/assets/fonts/BerkeleyMono-Italic.woff") format("woff");
+  font-family: "Berkeley Mono";
+  src: url("/assets/fonts/BerkeleyMono-Italic.woff2") format("woff2");
+  font-weight: normal;
   font-style: italic;
 }
 
@@ -43,7 +46,8 @@ body {
 }
 
 .bold {
-  font-family: "Berkeley Mono Bold";
+  font-family: "Berkeley Mono";
+  font-weight: bold;
 }
 
 a {
@@ -117,7 +121,8 @@ svg {
 }
 
 #build-link {
-  font-family: "Berkeley Mono Italic";
+  font-family: "Berkeley Mono";
+  font-style: italic;
   /* color: var(--green); */
   text-decoration: underline;
 }
