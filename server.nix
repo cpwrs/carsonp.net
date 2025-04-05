@@ -5,7 +5,7 @@ let
   loopback = "127.0.0.1";
   domain = "carsonp.net";
   email = "me@carsonp.net";
-  secrets = config.age.secrets.env.path; # Path to decrypted secrets
+  secrets = config.age.secrets.secretenv.path; # Path to decrypted secrets
 in
 {  
   imports = [ "${modulesPath}/virtualisation/amazon-image.nix" ];
@@ -40,8 +40,8 @@ in
 
   # Decrypt secret env vars 
   age.secrets = {
-    "env" = {
-      file = ./env.age;
+    "secretenv" = {
+      file = ./secrets/prodenv.age;
     };
   };
 
@@ -56,8 +56,8 @@ in
       Group = "users";
       ExecStart = "${pyenv}/bin/python3 backend.py --port ${toString port} --host ${loopback}";
       WorkingDirectory = "${source}/lib";
-      EnvironmentFile = secrets; # For secret env vars 
-      Environment = env; # For public env vars
+      EnvironmentFile = secrets; # For secret prod env vars 
+      Environment = env; # For public prod env vars
     };
   };
 

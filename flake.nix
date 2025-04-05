@@ -43,6 +43,11 @@
           # Python app dependencies
           pyenv
         ];
+        
+        # Development environment variables
+        shellHook = ''
+          export PROD=0
+        '';
       };
 
       # Server OS configuration for EC2 instance
@@ -53,7 +58,7 @@
           inherit pyenv;
           inherit source;
 
-          # Production environment variables
+          # Public production environment variables
           env = lib.optional (self ? shortRev) "COMMIT=${self.shortRev}" ++ [ "PROD=1" ];
         };
         modules = [ 
