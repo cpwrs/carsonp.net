@@ -31,20 +31,39 @@ function getColor(count, max) {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-// Fetch GitHub contributions from API 
-async function fetchContributions() {
-  const response = await fetch('/api/contributions')
-
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status}`);
+// Create an empty contributions array
+function emptyContributions() {
+  let contrib = new Array(52); // 52 weeks
+  for (let w = 0; w < contrib.length; w++) {
+    contrib[w] = new Array(7);
+    let week = contrib[w];
+    for (let d = 0; d < week.length; d++) {
+      week[d] = 0;
+    }
   }
 
-  const data = await response.json();
-  const contributions = data.data.user.contributionsCollection.contributionCalendar;
+  return contrib;
+}
 
-  return contributions.weeks.map(week =>
-    week.contributionDays.map(day => day.contributionCount)
-  );
+// Fetch GitHub contributions from API 
+async function fetchContributions() {
+  try {
+    const response = await fetch('/api/contributions')
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const contributions = data.data.user.contributionsCollection.contributionCalendar;
+
+    return contributions.weeks.map(week =>
+      week.contributionDays.map(day => day.contributionCount)
+    );
+  } catch(error) {
+    console.error("Failed to fetch contributions:", error);
+    return emptyContributions();
+  }
 }
 
 const BOX_SIZE = 40;
