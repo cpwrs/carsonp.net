@@ -45,11 +45,6 @@ body {
   flex-direction: column;
 }
 
-.bold {
-  font-family: "Berkeley Mono";
-  font-weight: bold;
-}
-
 a {
   color: var(--pink);
 }
@@ -71,15 +66,17 @@ svg {
 .wrapper {
   max-width: 650px;
   margin: 0 auto;
-  padding-top: 30px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   padding-left: 20px;
   padding-right: 20px;
   width: 100%;
   box-sizing: border-box;
-  /* Add distance between sections of content */
-  > div { 
-    padding-bottom: 30px;
-  }
+}
+
+/* Pieces of content inside the wrapper should be spaced evenly */
+.content {
+  padding-bottom: 30px;
 }
 
 /* Add some space */
@@ -139,4 +136,6 @@ svg {
 /* Website title */
 #title {
   font-size: 28px;
+  font-family: "Berkeley Mono";
+  font-weight: bold;
 }
