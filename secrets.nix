@@ -4,8 +4,9 @@ let
     ci = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLFlimfo5Wwn7aL4MjHAkQ8FRB3ifif6oa7HqYGt852";
   };
 in {
-  # Secret environment variables for production 
-  "secrets/prodenv.age".publicKeys = [ recipients.server ];
+  # Secret environment variables for production boxes
+  # CI boxes needs access to rotate keys
+  "secrets/prodenv.age".publicKeys = builtins.attrValues recipients;
 
   # Deployment secrets for CI
   "secrets/pem.age".publicKeys = [ recipients.ci ];

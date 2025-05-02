@@ -38,6 +38,10 @@
           
           # Python app dependencies
           pyenv
+
+          # Rotating secret keys
+          agenix.packages.${system}.default
+          age
         ];
         
         # Development environment variables
