@@ -18,33 +18,34 @@ function commitToLink(hash) {
 
 async function init() {
   const prod_tag = document.getElementById("prod-tag");
-  const build_tag = document.getElementById("build-tag");
+  const build_link = document.getElementById("build-link");
 
   try {
     const status = await fetchStatus();
 
     // If in dev env
     if (status === false) {
-      prod_tag.innerHTML = "DEV";
-      if (build_tag) build_tag.remove();
+      prod_tag.innerHTML = "Development";
+      if (build_link) build_link.remove();
       return;
     }
 
     // If in prod env
     if (status && status.commit) {
-      prod_tag.innerHTML = "PROD";
+      prod_tag.innerHTML = "Production";
       const link = commitToLink(status.commit);
-      build_tag.innerHTML = `BUILD <a href="${link}" id="build-link">${status.commit}</a>`;
+      build_link.href = `${link}`
+      build_link.textContent = `${status.commit}`;
       return
     }
 
     // Bad status
     throw new Error("Unexpected data format from /api/status: " + JSON.stringify(status));
-  } catch(error) {
+  } catch (error) {
     // Show an failed status on the status bar
-    prod_tag.innerHTML = "API FAIL";
-    prod_tag.style.background = "#ff5766";
-    if (build_tag) build_tag.remove();
+    prod_tag.innerHTML = "API Fail!";
+    prod_tag.style['text-decoration-color'] = "#ff5766";
+    if (build_tag) build_link.remove();
 
     console.error("Failed to set status: ", error);
   }

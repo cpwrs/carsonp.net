@@ -14,8 +14,8 @@ function maxCount(contribs) {
   return max;
 }
 
-const NO_COLOR = { r: 28, g: 23, b: 20}
-const LOW_COLOR = { r: 32, g: 31, b: 26 }
+const NO_COLOR = { r: 240, g: 238, b: 231 }
+const LOW_COLOR = { r: 228, g: 241, b: 228 }
 const HIGH_COLOR = { r: 137, g: 255, b: 203 }
 
 // Interpolate a color between LOW and HIGH based on one days contrib count, and the yearly max
@@ -69,7 +69,7 @@ async function fetchContributions() {
 const BOX_SIZE = 40;
 const BOX_GAP = 8;
 const CORNER_RADIUS = 5;
-const STROKE_COLOR = "#29221f";
+const STROKE_COLOR = "#e3e1d7";
 const STROKE_WIDTH = 1;
 const GRAPH_CELL = BOX_SIZE + BOX_GAP;
 

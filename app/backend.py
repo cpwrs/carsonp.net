@@ -68,11 +68,9 @@ def get_version():
     return False
 
 
-# Get the frontend dir path
+# Serve the frontend
 APP = Path(__file__).parent
 FRONTEND = APP / "frontend"
-
-# Serve the frontend
 app.mount("/", StaticFiles(directory=FRONTEND, html=True), name="frontend")
 
 if __name__ == "__main__":

@@ -32,7 +32,7 @@
       devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [
           # Language servers
-          nil
+          nixd
           pyright
           typescript-language-server
           
