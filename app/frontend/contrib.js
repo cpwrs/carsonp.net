@@ -15,8 +15,8 @@ function maxCount(contribs) {
 }
 
 const NO_COLOR = { r: 240, g: 238, b: 231 }
-const LOW_COLOR = { r: 228, g: 241, b: 228 }
-const HIGH_COLOR = { r: 137, g: 255, b: 203 }
+const LOW_COLOR = { r: 231, g: 237, b: 227 }
+const HIGH_COLOR = { r: 83, g: 217, b: 156 }
 
 // Interpolate a color between LOW and HIGH based on one days contrib count, and the yearly max
 function getColor(count, max) {

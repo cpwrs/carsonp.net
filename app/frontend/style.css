@@ -25,7 +25,7 @@
   --fg: #21221e;
   --grey: rgba(130, 130, 123, 0.5);
   --pink: #e4a0db;
-  --green: #6fc8a0;
+  --green: #53d99c;
 }
 
 html {
@@ -44,10 +44,17 @@ body {
   font-family: "Berkeley Mono";
 }
 
+h2 {
+  font-size: 20px;
+  font-style: bold;
+}
+
 a {
   color: var(--fg);
   text-decoration: underline;
   text-decoration-color: var(--pink);
+  text-decoration-thickness: 2px;
+  font-style: italic;
 }
 
 /* Contribution Scrolling Animation */
@@ -103,18 +110,20 @@ svg {
   color: var(--fg);
   text-decoration: underline;
   text-decoration-color: var(--green);
+  text-decoration-thickness: 2px;
 }
 
 #build-link {
   color: var(--pink);
   font-style: italic;
   text-decoration: underline;
+  text-decoration-thickness: 2px;
 }
 
 /* Correct display for contribution carousel */
 #contributions {
   box-sizing: border-box;
-  width: 200vh;
+  width: max(150vw, 200vh);
   overflow: hidden;
   display: flex;
   > * { flex: 0 0 100%; }
