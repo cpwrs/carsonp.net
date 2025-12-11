@@ -1,14 +1,12 @@
 let
   recipients = {
-    server = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqjJ/hkr0Z5SI8AXXA1qzCI8E40gbV79tsJLjr/tcua";
-    ci = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLFlimfo5Wwn7aL4MjHAkQ8FRB3ifif6oa7HqYGt852";
+    server = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1MhrVptKj83FK6cCuRWze3yILDnyCFhIJKWeFCBgFQ"; # root@server
+    toaster = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9+4cvvVu5SOVi1/rxU6xhUcBAhW9frDaE0TI5MXrIX"; # carson@toaster
   };
 in {
-  # Secret environment variables for production boxes
-  # CI boxes needs access to rotate keys
-  "secrets/prodenv.age".publicKeys = builtins.attrValues recipients;
+  "secrets/env.age".publicKeys = builtins.attrValues recipients;
 
-  # Deployment secrets for CI
-  "secrets/pem.age".publicKeys = [ recipients.ci ];
-  "secrets/ip.age".publicKeys = [ recipients.ci ];
+  # Only dev machines need ip/pem to deploy.
+  "secrets/pem.age".publicKeys = [ recipients.toaster ];
+  "secrets/ip.age".publicKeys = [ recipients.toaster ];
 }

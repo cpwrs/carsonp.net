@@ -11,7 +11,6 @@ app = FastAPI()
 # Environment variables
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
 COMMIT = os.environ.get("COMMIT")
-PROD = int(os.environ.get("PROD", "0"))
 
 # For GitHub GraphQL request
 GITHUB_USERNAME = "cpwrs"
@@ -33,39 +32,34 @@ query($userName:String!) {
     }
 """
 
-# --- API ---
-
 # Retrieve GitHub contribution data
 @app.get("/api/contributions")
 async def get_contributions():
   if not GITHUB_TOKEN:
-    raise HTTPException(status_code=500, detail="Internal server error")
+    raise HTTPException(status_code=500, detail="GitHub contributions not available")
   try:
     async with httpx.AsyncClient() as client:
       response = await client.post(
-        "https://api.github.com/graphql",
-        headers = {
-          "Authorization": f"Bearer { GITHUB_TOKEN }",
-          "Content-Type": "application/json",
-        },
-        json = {
-          "query": QUERY,
-          "variables": { "userName": GITHUB_USERNAME },
-        },
-      )
+          "https://api.github.com/graphql",
+          headers = {
+            "Authorization": f"Bearer {GITHUB_TOKEN}",
+            "Content-Type": "application/json",
+            },
+          json = {
+            "query": QUERY,
+            "variables": { "userName": GITHUB_USERNAME },
+            },
+          )
       return response.json()
   except httpx.HTTPStatusError as e:
     raise HTTPException(status_code=e.response.status_code, detail=str(e))
 
-# Check if the app is running in production, and if it is return the build hash
-@app.get("/api/status")
-def get_version():
-  if PROD:
-    if not COMMIT:
-      raise HTTPException(status_code=500, detail="Internal server error")
-    return { "commit": COMMIT }
-  else:
-    return False
+# Retrieve the commit rev
+@app.get("/api/commit")
+def get_commit():
+  if not COMMIT:
+    raise HTTPException(status_code=500, detail="Commit not available")
+  return { "commit": COMMIT }
 
 
 # Serve the frontend
@@ -74,14 +68,14 @@ FRONTEND = APP / "frontend"
 app.mount("/", StaticFiles(directory=FRONTEND, html=True), name="frontend")
 
 if __name__ == "__main__":
-  # Command line arguments for port and host
+  # CLI arguments for port and host
   p = ArgumentParser(description="Start the backend server with a custom host and port")
   p.add_argument("--port", type=int, default=8000, help="Port to run the server on (defaults to 8000)")
   p.add_argument("--host", type=str, default="127.0.0.1", help="Host to run the server on (defaults to loopback)")
   args = p.parse_args()
 
   uvicorn.run(
-    "backend:app", 
-    port=args.port, 
-    host=args.host
-  )
+      "backend:app", 
+      port=args.port, 
+      host=args.host
+      )

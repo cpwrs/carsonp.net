@@ -1,6 +1,18 @@
-// Create a graph of my GitHub contributions using the API
+// Age
 
-// Get the max number of contributions in the last year
+function age() {
+  var today = new Date();
+  var birthday = new Date('2001-10-25');
+  var age = today.getFullYear() - birthday.getFullYear();
+  var m = today.getMonth() - birthday.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) age--;
+  return age;
+}
+
+document.getElementById('age').textContent = age();
+
+// Contributions
+
 function maxCount(contribs) {
   let max = 0;
   for (let w = 0; w < contribs.length; w++) {
@@ -20,8 +32,8 @@ const HIGH_COLOR = { r: 83, g: 217, b: 156 }
 
 // Interpolate a color between LOW and HIGH based on one days contrib count, and the yearly max
 function getColor(count, max) {
-  if (count === 0) {  
-    return `rgb(${NO_COLOR.r}, ${NO_COLOR.g}, ${NO_COLOR.b})` 
+  if (count === 0) {
+    return `rgb(${NO_COLOR.r}, ${NO_COLOR.g}, ${NO_COLOR.b})`
   }
 
   const percent = count / max;
@@ -31,17 +43,15 @@ function getColor(count, max) {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-// Create an empty contributions array
-function emptyContributions() {
+function fakeContributions() {
   let contrib = new Array(52); // 52 weeks
   for (let w = 0; w < contrib.length; w++) {
     contrib[w] = new Array(7);
     let week = contrib[w];
     for (let d = 0; d < week.length; d++) {
-      week[d] = 0;
+      week[d] = Math.floor(Math.pow(Math.random(), 2) * 21);
     }
   }
-
   return contrib;
 }
 
@@ -60,20 +70,13 @@ async function fetchContributions() {
     return contributions.weeks.map(week =>
       week.contributionDays.map(day => day.contributionCount)
     );
-  } catch(error) {
+  } catch (error) {
     console.error("Failed to fetch contributions:", error);
-    return emptyContributions();
+    return fakeContributions();
   }
 }
 
 const BOX_SIZE = 40;
-const BOX_GAP = 8;
-const CORNER_RADIUS = 5;
-const STROKE_COLOR = "#e3e1d7";
-const STROKE_WIDTH = 1;
-const GRAPH_CELL = BOX_SIZE + BOX_GAP;
-
-// Create svg box for a day of contributions
 function createBox(x, y, color) {
   const box = document.createElementNS("http://www.w3.org/2000/svg", "rect");
   box.setAttribute("x", x);
@@ -81,18 +84,12 @@ function createBox(x, y, color) {
   box.setAttribute("width", BOX_SIZE);
   box.setAttribute("height", BOX_SIZE);
   box.setAttribute("fill", color);
-  box.setAttribute("rx", CORNER_RADIUS);
-  box.setAttribute("ry", CORNER_RADIUS);
-  box.setAttribute("stroke", STROKE_COLOR);
-  box.setAttribute("stroke-width", STROKE_WIDTH);
-
   return box;
 }
 
-// Create a whole graph of contribution boxes
 function createContribGraph(contribs) {
-  const width = contribs.length * GRAPH_CELL + BOX_GAP;
-  const height = 7 * GRAPH_CELL + BOX_GAP;
+  const width = contribs.length * BOX_SIZE;
+  const height = 7 * BOX_SIZE;
 
   const graph = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   graph.style.height = "100%";
@@ -105,15 +102,14 @@ function createContribGraph(contribs) {
     for (let d = 0; d < week.length; d++) {
       let count = week[d];
       let color = getColor(count, max);
-      let box = createBox(w * GRAPH_CELL + BOX_GAP, d * GRAPH_CELL + BOX_GAP, color);
+      let box = createBox(w * BOX_SIZE, d * BOX_SIZE, color);
       graph.appendChild(box);
     }
   }
-
   return graph;
 }
 
-async function init() {
+async function initContributions() {
   const container = document.getElementById("contributions");
   try {
     const contributions = await fetchContributions();
@@ -131,4 +127,41 @@ async function init() {
   }
 }
 
-init();
+// Commit Hash
+
+async function fetchCommit() {
+  try {
+    const response = await fetch('/api/commit');
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.commit;
+  } catch (error) {
+    console.error("Failed to fetch commit hash:", error);
+    return "SHRTREV"
+  }
+}
+
+const GITHUB_OWNER = "cpwrs"
+const GITHUB_REPO = "carsonp.net"
+function commitToLink(hash) {
+  return `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/tree/${hash}`;
+}
+
+async function initCommit() {
+  const commitLink = document.getElementById("commit");
+  try {
+    const commit = await fetchCommit();
+    const link = commitToLink(commit);
+    commitLink.href = `${link}`
+    commitLink.textContent = `${commit}`;
+  } catch (error) {
+    console.error("Failed to set status:", error);
+  }
+}
+
+document.getElementById('age').textContent = age();
+initContributions();
+initCommit();

@@ -1,4 +1,4 @@
-{ modulesPath, pkgs, source, pyenv, env, config, ... }:
+{ modulesPath, pkgs, pyenv, env, config, ... }:
 
 let
   port = 8000;
@@ -42,7 +42,7 @@ in
   # Decrypt secret env vars 
   age.secrets = {
     "secretenv" = {
-      file = ./secrets/prodenv.age;
+      file = ./secrets/env.age;
     };
   };
 
@@ -56,9 +56,9 @@ in
       User = "carson";
       Group = "users";
       ExecStart = "${pyenv}/bin/python3 backend.py --port ${toString port} --host ${loopback}";
-      WorkingDirectory = "${source}/lib";
-      EnvironmentFile = secrets; # For secret prod env vars 
-      Environment = env; # For public prod env vars
+      WorkingDirectory = "${./app}";
+      EnvironmentFile = secrets; # For secret env vars 
+      Environment = env; # For public env vars
     };
   };
 
@@ -96,5 +96,5 @@ in
     };
   };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.11";
 }
