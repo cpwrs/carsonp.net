@@ -26,8 +26,8 @@ function maxCount(contribs) {
   return max;
 }
 
-const NO_COLOR = { r: 240, g: 238, b: 231 }
-const LOW_COLOR = { r: 231, g: 237, b: 227 }
+const NO_COLOR = { r: 248, g: 247, b: 243 }
+const LOW_COLOR = { r: 238, g: 246, b: 238 }
 const HIGH_COLOR = { r: 83, g: 217, b: 156 }
 
 // Interpolate a color between LOW and HIGH based on one days contrib count, and the yearly max
@@ -49,7 +49,7 @@ function fakeContributions() {
     contrib[w] = new Array(7);
     let week = contrib[w];
     for (let d = 0; d < week.length; d++) {
-      week[d] = Math.floor(Math.pow(Math.random(), 2) * 21);
+      week[d] = Math.floor(Math.pow(Math.random(), 8) * 21);
     }
   }
   return contrib;
@@ -140,7 +140,7 @@ async function fetchCommit() {
     return data.commit;
   } catch (error) {
     console.error("Failed to fetch commit hash:", error);
-    return "SHRTREV"
+    return "APIFAIL"
   }
 }
 

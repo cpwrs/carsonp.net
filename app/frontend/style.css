@@ -17,44 +17,75 @@
   font-weight: normal;
   font-style: italic;
 }
+@font-face {
+  font-family: "EB Garamond";
+  src: url("/assets/fonts/EBGaramond-400-Normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "EB Garamond";
+  src: url("/assets/fonts/EBGaramond-400-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "EB Garamond";
+  src: url("/assets/fonts/EBGaramond-700-Normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
 
-/* Set variables */
 :root {
-  --bg: #f0eee7;
-  --bgoff: #e3e1d7;
+  --bg: #f8f7f3;
   --fg: #21221e;
-  --grey: rgba(130, 130, 123, 0.5);
-  --pink: #e4a0db;
-  --green: #53d99c;
 }
 
 html {
   overflow-x: hidden;
   background-color: var(--bg);
   color: var(--fg);
-  font-size: 16px;
+  line-height: 1.5;
+  font-size-adjust: 0.53;
 }
 
 body {
   margin: 0px;
   overflow-x: hidden;
-  display: flex;
   min-height: 100vh;
-  flex-direction: column;
+  font-family: "EB Garamond";
+  max-width: 80ch;
+  padding: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+header {
+  margin-top: -1rem;
+  margin-bottom: 0.6rem;
+}
+
+header .title {
+  display: flex;
+  align-items: baseline;
+}
+
+header .title-symbol {
   font-family: "Berkeley Mono";
+  font-size: 2.7rem;
+  position: relative;
+  top: 6px;
 }
 
-@media (max-width: 500px) {
-  html {
-    font-size: 14px;
-  }
+header .title-sub {
+  font-size: 2rem;
 }
-
 
 h1 {
   font-style: bold;
   font-size: 1rem;
-  margin-top: 40px;
 }
 
 a {
@@ -62,11 +93,12 @@ a {
   text-decoration: underline;
   text-decoration-color: var(--fg);
   text-decoration-thickness: 1px;
-  font-weight: bold;
 }
 
 #commit {
   font-style: italic;
+  font-weight: bold;
+  font-family: "Berkeley Mono"
 }
 
 /* Contribution Scrolling Animation */
@@ -84,8 +116,6 @@ svg {
 
 #contributions {
   box-sizing: border-box;
-  /* width: max(150vw, 200vh); */
-  /* overflow: hidden; */
   display: flex;
   > * { flex: 0 0 1500px; }
   -webkit-mask-image: linear-gradient(
@@ -102,15 +132,6 @@ svg {
   black 90%,
   transparent 100%
   );
-}
-
-.wrapper {
-  max-width: 800px;
-  margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .spacer {
