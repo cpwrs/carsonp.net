@@ -27,11 +27,13 @@
   in {
     devShells.${system}.default = pkgs.mkShell {
       packages = with pkgs; [
+        nodejs_20
         pyenv
         nixd
         alejandra
         pyright
         typescript-language-server
+        svelte-language-server
         agenix.packages.${system}.default
         age
       ];
