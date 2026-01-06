@@ -1,7 +1,3 @@
-<script lang="ts">
-  import "$lib/global.css";
-</script>
-
 <header>
   <nav>
     <a class="title" href="/">carsonp.net</a>
