@@ -1,24 +1,10 @@
 <script lang="ts">
-  export let contributions: number[][] | null;
+  export let contributions: number[][];
 
   const BOX_SIZE = 40;
   const NO_COLOR = { r: 248, g: 247, b: 243 };
   const LOW_COLOR = { r: 238, g: 246, b: 238 };
   const HIGH_COLOR = { r: 83, g: 217, b: 156 };
-
-  function fakeContributions(): number[][] {
-    let contrib = new Array(52); // 52 weeks
-    for (let w = 0; w < contrib.length; w++) {
-      contrib[w] = new Array(7);
-      let week = contrib[w];
-      for (let d = 0; d < week.length; d++) {
-        week[d] = Math.floor(Math.pow(Math.random(), 8) * 21);
-      }
-    }
-    return contrib;
-  }
-
-  $: contribs = contributions ?? fakeContributions();
 
   function maxCount(contributions: number[][]) {
     let max = 0;
@@ -45,15 +31,19 @@
     return `rgb(${r}, ${g}, ${b})`;
   }
 
-  $: width = contribs.length * BOX_SIZE;
+  $: width = contributions.length * BOX_SIZE;
   $: height = 7 * BOX_SIZE;
-  $: max = maxCount(contribs);
+  $: max = maxCount(contributions);
 </script>
 
 <a href="https://github.com/cpwrs" class="contrib-container">
   {#each [false, true] as isClone}
-    <svg viewBox="0 0 {width} {height}" style="height: 100%;" aria-hidden={isClone}>
-      {#each contribs as week, w}
+    <svg
+      viewBox="0 0 {width} {height}"
+      style="height: 100%;"
+      aria-hidden={isClone}
+    >
+      {#each contributions as week, w}
         {#each week as count, d}
           <rect
             x={w * BOX_SIZE}
