@@ -42,9 +42,23 @@ async function fetchGitHubContributions() {
   return contributions;
 }
 
+function fakeContributions(): number[][] {
+  let contrib = new Array(52); // 52 weeks
+  for (let w = 0; w < contrib.length; w++) {
+    contrib[w] = new Array(7);
+    let week = contrib[w];
+    for (let d = 0; d < week.length; d++) {
+      week[d] = Math.floor(Math.pow(Math.random(), 8) * 21);
+    }
+  }
+  return contrib;
+}
+
 export const load: LayoutServerLoad = () => {
+  const prod = env.PROD === '1';
   return {
-    contributions: env.GITHUB_TOKEN ? fetchGitHubContributions() : null,
-    prod: env.PROD === '1',
+    contributions: prod
+      ? (env.GITHUB_TOKEN ? fetchGitHubContributions() : null)
+      : fakeContributions(),
   }
 };

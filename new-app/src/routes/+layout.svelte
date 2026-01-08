@@ -24,14 +24,8 @@
 </svelte:head>
 
 <Header />
-{#if data.prod}
-  {#if data.contributions}
-    {#await data.contributions then contributions}
-      <Contributions {contributions} />
-    {/await}
-  {/if}
-{:else}
-  <Contributions contributions={fakeContributions()} />
-{/if}
+{#await data.contributions then contributions}
+  <Contributions {contributions} />
+{/await}
 
 {@render children()}

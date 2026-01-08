@@ -60,6 +60,7 @@
 
 <style>
   .contrib-container {
+    margin-bottom: var(--line-height);
     display: flex;
     > * {
       flex: 0 0 1500px;
