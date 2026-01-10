@@ -12,10 +12,10 @@
     <img class="icon" src={git} alt="Git Logo" />
     <span>Source</span>
   </a>
-  <a href="/">
-    <img class="icon" src={rss} alt="RSS Logo" />
-    <span>RSS</span>
-  </a>
+  <!-- <a href="/"> -->
+  <!--   <img class="icon" src={rss} alt="RSS Logo" /> -->
+  <!--   <span>RSS</span> -->
+  <!-- </a> -->
 </nav>
 
 <style>

@@ -19,4 +19,4 @@
 
 {@render children()}
 
-<Footer commit={data.commit}/>
+<Footer commit={data.commit} />

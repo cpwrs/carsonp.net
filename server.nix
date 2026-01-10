@@ -1,4 +1,4 @@
-{ modulesPath, pkgs, pyenv, env, config, ... }:
+{ modulesPath, pkgs, blog, env, config, ... }:
 
 let
   port = 8000;
@@ -55,8 +55,8 @@ in
     serviceConfig = {
       User = "carson";
       Group = "users";
-      ExecStart = "${pyenv}/bin/python3 backend.py --port ${toString port} --host ${loopback}";
-      WorkingDirectory = "${./app}";
+      ExecStart = "${pkgs.nodejs_20}/bin/node ${blog}/build";
+      WorkingDirectory = "${blog}";
       EnvironmentFile = secrets; # For secret env vars 
       Environment = env; # For public env vars
     };
