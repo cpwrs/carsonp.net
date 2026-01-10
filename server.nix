@@ -1,19 +1,23 @@
-{ modulesPath, pkgs, blog, env, config, ... }:
-
-let
+{
+  modulesPath,
+  pkgs,
+  blog,
+  env,
+  config,
+  ...
+}: let
   port = 8000;
   loopback = "127.0.0.1";
   domain = "carsonp.net";
   email = "me@carsonp.net";
   secrets = config.age.secrets.secretenv.path; # Path to decrypted secrets
-in
-{  
-  imports = [ "${modulesPath}/virtualisation/amazon-image.nix" ];
+in {
+  imports = ["${modulesPath}/virtualisation/amazon-image.nix"];
 
-  # Enable flakes 
+  # Enable flakes
   nixpkgs.config.allowUnfree = true;
   nix = {
-    settings.allowed-users = [ "carson" ];
+    settings.allowed-users = ["carson"];
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
@@ -34,12 +38,12 @@ in
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLFlimfo5Wwn7aL4MjHAkQ8FRB3ifif6oa7HqYGt852 me@carsonp.net" # Desktop user:carson
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFzh/HEQgeasLpvfHLPSqDNpxjFwMdTIRjZoLkfKDm8x me@carsonp.net" # Laptop user:carson
         ];
-        extraGroups = [ "wheel" ];
+        extraGroups = ["wheel"];
       };
     };
   };
 
-  # Decrypt secret env vars 
+  # Decrypt secret env vars
   age.secrets = {
     "secretenv" = {
       file = ./secrets/env.age;
@@ -49,16 +53,21 @@ in
   # Start app locally with a systemd service
   systemd.services.web-app = {
     description = "carsonp.net HTTP server";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
+    after = ["network.target"];
+    wantedBy = ["multi-user.target"];
 
     serviceConfig = {
       User = "carson";
       Group = "users";
       ExecStart = "${pkgs.nodejs_20}/bin/node ${blog}/build";
       WorkingDirectory = "${blog}";
-      EnvironmentFile = secrets; # For secret env vars 
-      Environment = env; # For public env vars
+      EnvironmentFile = secrets; # For secret env vars
+      Environment =
+        env
+        ++ [
+          "NODE_ENV=production"
+          "PORT=${toString port}"
+        ]; # For public env vars
     };
   };
 
@@ -92,7 +101,7 @@ in
   networking = {
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 80 443 22 ];
+      allowedTCPPorts = [80 443 22];
     };
   };
 
