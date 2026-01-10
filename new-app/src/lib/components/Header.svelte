@@ -9,7 +9,6 @@
 <style>
   header {
     margin-bottom: 2ch;
-    font-family: "EB Garamond";
     font-weight: 400;
     & nav {
       display: flex;

@@ -54,11 +54,17 @@ function fakeContributions(): number[][] {
   return contrib;
 }
 
+function fakeCommit(): string {
+  return "SHRTREV";
+}
+
 export const load: LayoutServerLoad = () => {
   const prod = env.PROD === '1';
-  return {
-    contributions: prod
-      ? (env.GITHUB_TOKEN ? fetchGitHubContributions() : null)
-      : fakeContributions(),
+  return prod ? {
+    contributions: (env.GITHUB_TOKEN ? fetchGitHubContributions() : null),
+    commit: (env.COMMIT ?? null)
+  } : {
+    contributions: fakeContributions(),
+    commit: fakeCommit(),
   }
 };

@@ -72,6 +72,8 @@ html {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   max-width: 70ch;
   min-height: 100vh;
   padding: 2ch;
