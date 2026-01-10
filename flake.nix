@@ -33,7 +33,7 @@
     nixosConfigurations.server = nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
-        env = lib.optional (self ? shortRev) "COMMIT=${self.shortRev}";
+        env = lib.optional (self ? shortRev) "COMMIT=${self.shortRev}" ++ [ "PROD=1" ];
         blog = self.packages.${system}.blog;
       };
       modules = [
