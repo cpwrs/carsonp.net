@@ -51,15 +51,12 @@
         src = ./new-app;
         npmDepsHash = "sha256-zqpWINaUCYz97D4tuG1YPEkr3mkkGPWRD06nPOT4ndk=";
         npmBuildScript = "build";
+        PUBLIC_COMMIT = self.shortRev;
         installPhase = ''
           runHook preInstall
           mkdir -p $out
           cp -r build $out/
           runHook postInstall
-        '';
-
-        shellHook = ''
-          PUBLIC_COMMIT=${self.shortRev};
         '';
       };
       deploy = pkgs.writeShellApplication {
