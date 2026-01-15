@@ -54,17 +54,17 @@ function fakeContributions(): number[][] {
   return contrib;
 }
 
-function fakeCommit(): string {
-  return "SHRTREV";
-}
+export const load: LayoutServerLoad = ({ setHeaders }) => {
+  // Cache contributions for a day
+  setHeaders({
+    'cache-control': 'public, max-age=86400'
+  })
 
-export const load: LayoutServerLoad = () => {
+  // Return fake contribution data in a dev environment
   const prod = env.PROD === '1';
   return prod ? {
     contributions: (env.GITHUB_TOKEN ? fetchGitHubContributions() : null),
-    commit: (env.COMMIT ?? null)
   } : {
     contributions: fakeContributions(),
-    commit: fakeCommit(),
   }
 };

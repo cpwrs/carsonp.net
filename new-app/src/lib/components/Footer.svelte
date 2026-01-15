@@ -1,22 +1,24 @@
 <script lang="ts">
-  export let commit: string;
-  import rss from "$lib/rss.svg";
+  export let commit: string | null;
+  // import rss from "$lib/rss.svg";
   import git from "$lib/git.svg";
 </script>
 
-<nav>
-  <a
-    href="https://github.com/cpwrs/carsonp.net/tree/{commit}"
-    aria-label="View commit {commit} on GitHub"
-  >
-    <img class="icon" src={git} alt="Git Logo" />
-    <span>Source</span>
-  </a>
-  <!-- <a href="/"> -->
-  <!--   <img class="icon" src={rss} alt="RSS Logo" /> -->
-  <!--   <span>RSS</span> -->
-  <!-- </a> -->
-</nav>
+{#if commit}
+  <nav>
+    <a
+      href="https://github.com/cpwrs/carsonp.net/tree/{commit}"
+      aria-label="View commit {commit} on GitHub"
+    >
+      <img class="icon" src={git} alt="Git Logo" />
+      <span>Source</span>
+    </a>
+    <!-- <a href="/"> -->
+    <!--   <img class="icon" src={rss} alt="RSS Logo" /> -->
+    <!--   <span>RSS</span> -->
+    <!-- </a> -->
+  </nav>
+{/if}
 
 <style>
   nav {

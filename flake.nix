@@ -15,7 +15,6 @@
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
-    lib = nixpkgs.lib;
   in {
     devShells.${system}.default = pkgs.mkShell {
       packages = with pkgs; [
@@ -27,13 +26,16 @@
         agenix.packages.${system}.default
         age
       ];
+
+      PUBLIC_COMMIT = "";
+      PROD = 0;
     };
 
     # Server OS configuration for EC2 instance
     nixosConfigurations.server = nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
-        env = lib.optional (self ? shortRev) "COMMIT=${self.shortRev}" ++ [ "PROD=1" ];
+        env = ["PROD=1"];
         blog = self.packages.${system}.blog;
       };
       modules = [
@@ -54,6 +56,10 @@
           mkdir -p $out
           cp -r build $out/
           runHook postInstall
+        '';
+
+        shellHook = ''
+          PUBLIC_COMMIT=${self.shortRev};
         '';
       };
       deploy = pkgs.writeShellApplication {
