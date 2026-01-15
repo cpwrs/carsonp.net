@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    blog.url = "github:cpwrs/blog";
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -8,57 +9,26 @@
   };
 
   outputs = {
-    self,
     nixpkgs,
     agenix,
+    blog,
     ...
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
   in {
-    devShells.${system}.default = pkgs.mkShell {
-      packages = with pkgs; [
-        nodejs_20
-        nixd
-        alejandra
-        typescript-language-server
-        svelte-language-server
-        agenix.packages.${system}.default
-        age
-      ];
-
-      PUBLIC_COMMIT = "";
-      PROD = 0;
-    };
-
     # Server OS configuration for EC2 instance
     nixosConfigurations.server = nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = {
-        env = ["PROD=1"];
-        blog = self.packages.${system}.blog;
-      };
       modules = [
         agenix.nixosModules.default
+        blog.nixosModules.default
         ./server.nix
       ];
     };
 
     # Deployment script
     packages.${system} = {
-      blog = pkgs.buildNpmPackage {
-        name = "blog";
-        src = ./new-app;
-        npmDepsHash = "sha256-zqpWINaUCYz97D4tuG1YPEkr3mkkGPWRD06nPOT4ndk=";
-        npmBuildScript = "build";
-        PUBLIC_COMMIT = self.shortRev;
-        installPhase = ''
-          runHook preInstall
-          mkdir -p $out
-          cp -r build $out/
-          runHook postInstall
-        '';
-      };
       deploy = pkgs.writeShellApplication {
         name = "deploy";
         runtimeInputs = with pkgs; [

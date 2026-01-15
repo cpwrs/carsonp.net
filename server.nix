@@ -9,8 +9,6 @@
   port = 8000;
   loopback = "127.0.0.1";
   domain = "carsonp.net";
-  email = "me@carsonp.net";
-  secrets = config.age.secrets.secretenv.path; # Path to decrypted secrets
 in {
   imports = ["${modulesPath}/virtualisation/amazon-image.nix"];
 
@@ -45,29 +43,8 @@ in {
 
   # Decrypt secret env vars
   age.secrets = {
-    "secretenv" = {
-      file = ./secrets/env.age;
-    };
-  };
-
-  # Start app locally with a systemd service
-  systemd.services.web-app = {
-    description = "carsonp.net HTTP server";
-    after = ["network.target"];
-    wantedBy = ["multi-user.target"];
-
-    serviceConfig = {
-      User = "carson";
-      Group = "users";
-      ExecStart = "${pkgs.nodejs_20}/bin/node ${blog}/build";
-      WorkingDirectory = "${blog}";
-      EnvironmentFile = secrets; # For secret env vars
-      Environment =
-        env
-        ++ [
-          "NODE_ENV=production"
-          "PORT=${toString port}"
-        ]; # For public env vars
+    "blog-env" = {
+      file = ./secrets/blog-env.age;
     };
   };
 
@@ -94,7 +71,7 @@ in {
   # Auto domain validation and certificate retrieval with Let's Encrypt
   security.acme = {
     acceptTerms = true;
-    defaults.email = email;
+    defaults.email = "me@carsonp.net";
   };
 
   # Allow HTTP, HTTPS, SSH connections
@@ -103,6 +80,13 @@ in {
       enable = true;
       allowedTCPPorts = [80 443 22];
     };
+  };
+
+  blogRuntime = {
+    enable = true;
+    port = port;
+    secretEnv = config.age.secrets.blog-env.path;
+    user = "carson";
   };
 
   system.stateVersion = "25.11";
