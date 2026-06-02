@@ -82,11 +82,10 @@ in {
     };
   };
 
-  blogRuntime = {
+  blog = {
     enable = true;
     port = port;
     secretEnv = config.age.secrets.blog-env.path;
-    user = "carson";
   };
 
   system.stateVersion = "25.11";
