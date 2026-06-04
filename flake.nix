@@ -1,67 +1,78 @@
 {
+  description = "NixOS configuration, development shell, and deployment script for my hub on the internet";
+
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     blog.url = "github:cpwrs/blog";
+
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko/latest";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = {
-    nixpkgs,
-    agenix,
-    blog,
-    ...
-  }: let
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
-  in {
-    # Server OS configuration for EC2 instance
-    nixosConfigurations.server = nixpkgs.lib.nixosSystem {
-      inherit system;
-      modules = [
-        agenix.nixosModules.default
-        blog.nixosModules.default
-        ./server.nix
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+        "aarch64-linux"
       ];
-    };
 
-    # Deployment script
-    packages.${system} = {
-      deploy = pkgs.writeShellApplication {
-        name = "deploy";
-        runtimeInputs = with pkgs; [
-          nixos-rebuild
-          agenix.packages.${system}.default
-          age
+      perSystem = {pkgs, ...}: {
+        devShells.default = pkgs.mkShell {
+          packages = [
+            pkgs.nixd
+            pkgs.alejandra
+            pkgs.age
+            pkgs.nixos-anywhere
+            inputs.agenix.packages.${pkgs.system}.default
+          ];
+        };
+
+        packages.deploy = pkgs.writeShellApplication {
+          name = "deploy";
+
+          runtimeInputs = [
+            pkgs.nixos-rebuild
+            pkgs.age
+            inputs.agenix.packages.${pkgs.system}.default
+          ];
+
+          text = ''
+            set -euo pipefail
+            IP=$(agenix -d secrets/ip.age)
+
+            echo "Deploying to carson@$IP..."
+
+            nixos-rebuild \
+              --target-host "carson@$IP" \
+              --use-remote-sudo \
+              --flake .#hetzner-hub \
+              switch
+          '';
+        };
+      };
+
+      flake.nixosConfigurations.hetzner-hub = inputs.nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+
+        modules = [
+          ./modules/config.nix
+          ./modules/disk.nix
+          ./modules/network.nix
+          ./modules/carson.nix
+          ./modules/blog.nix
+
+          inputs.blog.nixosModules.default
+          inputs.agenix.nixosModules.default
+          inputs.disko.nixosModules.default
         ];
-
-        text = ''
-          set -e
-
-          # Check if user is an age recipient
-          if ! agenix -d secrets/ip.age > /dev/null 2>&1; then
-            echo "Error: User does not have deploy privileges. Failed to decrypt secrets."
-            exit 1
-          fi
-
-          # Grab target private key
-          PEM_FILE=$(mktemp)
-          agenix -d secrets/pem.age > "$PEM_FILE"
-          chmod 600 "$PEM_FILE"
-
-          # Grab target IP
-          IP=$(agenix -d secrets/ip.age)
-
-          # Skip confirmation and don't save target info to known_hosts
-          export NIX_SSHOPTS="-i $PEM_FILE -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
-
-          echo "Deploying to $IP..."
-          # Deploy the NixOS config to target
-          nixos-rebuild --target-host "root@$IP" --flake .#server switch
-        '';
       };
     };
-  };
 }

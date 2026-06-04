@@ -1,12 +1,14 @@
 let
-  recipients = {
-    server = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1MhrVptKj83FK6cCuRWze3yILDnyCFhIJKWeFCBgFQ"; # root@server
-    toaster = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9+4cvvVu5SOVi1/rxU6xhUcBAhW9frDaE0TI5MXrIX"; # carson@toaster
-  };
+  carsons = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID6HfPXGeHhbygJrzEvvP4G+wV8I//JnW9ce4mz1GDhW carson@toaster"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFzh/HEQgeasLpvfHLPSqDNpxjFwMdTIRjZoLkfKDm8x carson@surface"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIWkpjTxptu9AAQSatBe4gHzejFDcUCuXGY/GR4Dzg7v carson@air"
+  ];
+  server = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOO9+UDPfN0h5c573qVa+yJb+4qf05XHvFmL1fx2iOFL root@nixos";
+  all = carsons ++ [server];
 in {
-  "secrets/blog-env.age".publicKeys = builtins.attrValues recipients;
+  "secrets/blog-env.age".publicKeys = all;
 
-  # Only dev machines need ip/pem to deploy.
-  "secrets/pem.age".publicKeys = [ recipients.toaster ];
-  "secrets/ip.age".publicKeys = [ recipients.toaster ];
+  # Only developers need ip to deploy.
+  "secrets/ip.age".publicKeys = carsons;
 }
