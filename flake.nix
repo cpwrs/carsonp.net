@@ -52,7 +52,7 @@
 
             nixos-rebuild \
               --target-host "carson@$IP" \
-              --use-remote-sudo \
+              --sudo \
               --flake .#hetzner-hub \
               switch
           '';
