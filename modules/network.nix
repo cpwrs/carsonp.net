@@ -1,4 +1,4 @@
-{
+{config, ...}: {
   networking = {
     # Keep DHCP ownership explicit: only networkd should request IPv4 DHCP.
     useDHCP = false;
@@ -7,6 +7,7 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [80 443 22];
+      trustedInterfaces = [ config.services.tailscale.interfaceName ];
     };
   };
 
@@ -26,5 +27,10 @@
     networkConfig.DHCP = "ipv4";
     address = ["2a01:4ff:1f0:b3c5::1/64"];
     routes = [{Gateway = "fe80::1";}];
+  };
+
+  services.tailscale = {
+    enable = true;
+    interfaceName = "ts0";
   };
 }
