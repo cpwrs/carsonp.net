@@ -67,6 +67,7 @@
           ./modules/disk.nix
           ./modules/network.nix
           ./modules/carson.nix
+          ./modules/http.nix
           ./modules/blog.nix
 
           inputs.blog.nixosModules.default
