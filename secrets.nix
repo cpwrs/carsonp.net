@@ -7,7 +7,8 @@ let
   server = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOO9+UDPfN0h5c573qVa+yJb+4qf05XHvFmL1fx2iOFL root@nixos";
   all = carsons ++ [server];
 in {
-  "secrets/blog-env.age".publicKeys = all;
+  "secrets/blog.env.age".publicKeys = all;
+  "secrets/route53.env.age".publicKeys = all;
 
   # Only developers need ip to deploy.
   "secrets/ip.age".publicKeys = carsons;
