@@ -10,7 +10,7 @@
     enable = true;
   };
 
-  # Auto certificate renewal using ACME and the DNS-01
+  # Auto certificate renewal using Let's Encrypt and the DNS-01 challenge
   security.acme = {
     acceptTerms = true;
     defaults.email = "me@carsonp.net";
