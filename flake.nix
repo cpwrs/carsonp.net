@@ -69,6 +69,7 @@
           ./modules/carson.nix
           ./modules/http.nix
           ./modules/blog.nix
+          ./modules/vaultwarden.nix
 
           inputs.blog.nixosModules.default
           inputs.agenix.nixosModules.default

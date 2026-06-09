@@ -1,5 +1,6 @@
 {config, ...}: {
   networking = {
+    hostName = "hub";
     # Keep DHCP ownership explicit: only networkd should request IPv4 DHCP.
     useDHCP = false;
     dhcpcd.enable = false;
@@ -7,7 +8,7 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [80 443 22];
-      trustedInterfaces = [ config.services.tailscale.interfaceName ];
+      trustedInterfaces = [config.services.tailscale.interfaceName];
     };
   };
 
