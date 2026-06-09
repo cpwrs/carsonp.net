@@ -5,6 +5,7 @@
   blog = {
     enable = true;
     port = 8000;
+    address = "::1";
     secretEnv = config.age.secrets."blog.env".path;
   };
 
@@ -13,7 +14,7 @@
     useACMEHost = "carsonp.net";
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString config.blog.port}";
+      proxyPass = "http://[${config.blog.address}]:${toString config.blog.port}";
       recommendedProxySettings = true;
     };
   };

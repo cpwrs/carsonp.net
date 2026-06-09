@@ -1,5 +1,6 @@
 let
   domain = "vault.carsonp.net";
+  address = "::1";
   port = 8001;
 in {
   services.vaultwarden = {
@@ -8,7 +9,7 @@ in {
     backupDir = "/var/backup/vaultwarden";
     # environmentFile =
     config = {
-      ROCKET_ADDRESS = "127.0.0.1";
+      ROCKET_ADDRESS = "::1";
       ROCKET_PORT = port;
       DOMAIN = "https://${domain}";
       SIGNUPS_ALLOWED = false;
@@ -19,7 +20,7 @@ in {
     useACMEHost = "carsonp.net";
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString port}";
+      proxyPass = "http://[${address}]:${toString port}";
       recommendedProxySettings = true;
     };
   };
