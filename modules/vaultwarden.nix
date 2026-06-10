@@ -7,7 +7,6 @@ in {
     enable = true;
     dbBackend = "sqlite";
     backupDir = "/var/backup/vaultwarden";
-    # environmentFile =
     config = {
       ROCKET_ADDRESS = "::1";
       ROCKET_PORT = port;

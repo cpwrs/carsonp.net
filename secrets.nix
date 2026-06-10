@@ -9,6 +9,7 @@ let
 in {
   "secrets/blog.env.age".publicKeys = all;
   "secrets/route53.env.age".publicKeys = all;
+  "secrets/miniflux.env.age".publicKeys = all;
 
   # Only developers need ip to deploy.
   "secrets/ip.age".publicKeys = carsons;
