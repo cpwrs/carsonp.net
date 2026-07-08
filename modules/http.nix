@@ -1,5 +1,5 @@
 {config, ...}: {
-  age.secrets."route53.env".file = ./../secrets/route53.env.age;
+  age.secrets."hetzner.env".file = ./../secrets/hetzner.env.age;
 
   # Use nginx as a reverse proxy to direct traffic to web servers on various loopback ports
   services.nginx = {
@@ -17,8 +17,8 @@
     certs."carsonp.net" = {
       domain = "carsonp.net";
       extraDomainNames = ["*.carsonp.net"];
-      dnsProvider = "route53";
-      environmentFile = config.age.secrets."route53.env".path;
+      dnsProvider = "hetzner";
+      environmentFile = config.age.secrets."hetzner.env".path;
       group = "nginx";
     };
   };
