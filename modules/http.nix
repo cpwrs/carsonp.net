@@ -8,6 +8,13 @@
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
     enable = true;
+
+    virtualHosts."_catchall" = {
+      default = true;
+      useACMEHost = "carsonp.net";
+      forceSSL = true;
+      locations."/".return = "404";
+    };
   };
 
   # Auto certificate renewal using Let's Encrypt and the DNS-01 challenge
