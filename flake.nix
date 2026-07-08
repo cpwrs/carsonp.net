@@ -71,6 +71,7 @@
           ./modules/blog.nix
           ./modules/vaultwarden.nix
           ./modules/miniflux.nix
+          ./modules/ntfy.nix
 
           inputs.blog.nixosModules.default
           inputs.agenix.nixosModules.default

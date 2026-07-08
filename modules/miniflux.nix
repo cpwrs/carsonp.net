@@ -1,6 +1,6 @@
 {config, ...}: let
   domain = "rss.carsonp.net";
-  fullAddr = "[::1]:8002";
+  socketAddr = "[::1]:8002";
 in {
   age.secrets."miniflux.env".file = ./../secrets/miniflux.env.age;
 
@@ -10,7 +10,7 @@ in {
     adminCredentialsFile = config.age.secrets."miniflux.env".path;
     config = {
       CREATE_ADMIN = true;
-      LISTEN_ADDR = fullAddr;
+      LISTEN_ADDR = socketAddr;
       BASE_URL = "https://${domain}";
     };
   };
@@ -19,7 +19,7 @@ in {
     useACMEHost = "carsonp.net";
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://${fullAddr}";
+      proxyPass = "http://${socketAddr}";
       recommendedProxySettings = true;
     };
   };
