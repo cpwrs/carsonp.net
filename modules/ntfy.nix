@@ -10,11 +10,11 @@ in {
       base-url = "https://${domain}";
       listen-http = socketAddr;
       upstream-base-url = "https://ntfy.sh";
-      auth-file = "/var/lib/ntfy/auth.db";
+      auth-file = "/var/lib/ntfy-sh/auth.db";
       auth-default-access = "deny-all";
       enable-login = true;
       require-login = true;
-      cache-file = "/var/lib/ntfy/cache.db";
+      cache-file = "/var/lib/ntfy-sh/cache.db";
       cache-duration = "24h";
     };
     environmentFile = config.age.secrets."ntfy.env".path;
