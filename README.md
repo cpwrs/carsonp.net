@@ -9,3 +9,5 @@ All apps are accessible under the `carsonp.net` domain behind an Nginx reverse p
 
 I'm using the [lego](https://go-acme.github.io) ACME client to renew TLS certificates from Let's Encrypt.
 Certificates are issued for `carsonp.net` and `*.carsonp.net` using the DNS-01 challenge and Hetzner DNS zone provider.
+
+The `acme-order-renew-carsonp.net` systemd service triggers renewal of ACME certifications.
