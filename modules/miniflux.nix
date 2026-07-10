@@ -15,7 +15,7 @@ in {
     };
   };
 
-  systemd.services.miniflux.onFailure = ["ntfy-failure@%n.service"];
+  systemd.services.miniflux.onFailure = ["ntfy-webapp-failure@%n.service"];
 
   services.nginx.virtualHosts.${domain} = {
     useACMEHost = "carsonp.net";

@@ -45,6 +45,7 @@ in {
       require-login = true;
       cache-file = "/var/lib/ntfy-sh/cache.db";
       cache-duration = "24h";
+      behind-proxy = true;
     };
     environmentFile = config.age.secrets."ntfy.env".path;
   };
@@ -54,6 +55,7 @@ in {
     forceSSL = true;
     locations."/" = {
       proxyPass = "http://${socketAddr}";
+      proxyWebsockets = true;
       recommendedProxySettings = true;
     };
   };

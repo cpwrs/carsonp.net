@@ -19,5 +19,5 @@
     };
   };
 
-  systemd.services.blog.onFailure = ["ntfy-failure@%n.service"];
+  systemd.services.blog.onFailure = ["ntfy-webapp-failure@%n.service"];
 }
