@@ -18,4 +18,6 @@
       recommendedProxySettings = true;
     };
   };
+
+  systemd.services.blog.onFailure = ["ntfy-failure@%n.service"];
 }

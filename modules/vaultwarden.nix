@@ -15,6 +15,8 @@ in {
     };
   };
 
+  systemd.services.vaultwarden.onFailure = ["ntfy-failure@%n.service"];
+
   services.nginx.virtualHosts.${domain} = {
     useACMEHost = "carsonp.net";
     forceSSL = true;

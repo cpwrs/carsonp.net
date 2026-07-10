@@ -1,8 +1,37 @@
-{config, ...}: let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   domain = "ntfy.carsonp.net";
   socketAddr = "[::1]:8003";
+
+  ntfyWebAppFailure = pkgs.writeShellApplication {
+    name = "ntfy-webapp-failure";
+    runtimeInputs = [pkgs.ntfy-sh pkgs.systemd];
+    text = ''
+      unit="$1"
+      logs="$(
+        {
+          systemctl status "$unit" --no-pager --full || true
+          echo
+          journalctl -u "$unit" -n 80 --no-pager -o short-iso || true
+        }
+      )"
+
+      ntfy publish \
+        --token "$NTFY_TOKEN" \
+        --title "Failure in $unit" \
+        --priority urgent \
+        --tags warning,skull \
+        "$NTFY_URL/$NTFY_TOPIC" \
+        "$logs"
+    '';
+  };
 in {
   age.secrets."ntfy.env".file = ./../secrets/ntfy.env.age;
+  age.secrets."ntfy-server-token.env".file = ./../secrets/ntfy-server-token.env.age;
 
   services.ntfy-sh = {
     enable = true;
@@ -26,6 +55,21 @@ in {
     locations."/" = {
       proxyPass = "http://${socketAddr}";
       recommendedProxySettings = true;
+    };
+  };
+
+  systemd.services."ntfy-webapp-failure@" = {
+    description = "Send ntfy notification for failed web app (unit %I)";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${lib.getExe ntfyWebAppFailure} %I";
+      Environment = [
+        "NTFY_URL=https://${domain}"
+        "NTFY_TOPIC=alerts"
+      ];
+      EnvironmentFile = config.age.secrets."ntfy-server-token.env".path;
+      NoNewPrivileges = true;
+      PrivateTmp = true;
     };
   };
 }
