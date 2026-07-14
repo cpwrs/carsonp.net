@@ -24,8 +24,8 @@
         --token "$NTFY_TOKEN" \
         --title "Failure in $unit" \
         --priority urgent \
-        --tags warning,skull \
-        "$NTFY_URL/$NTFY_TOPIC" \
+        --tags warning \
+        "https://${domain}/alerts" \
         "$logs"
     '';
   };
@@ -65,10 +65,6 @@ in {
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${lib.getExe ntfyWebAppFailure} %I";
-      Environment = [
-        "NTFY_URL=https://${domain}"
-        "NTFY_TOPIC=alerts"
-      ];
       EnvironmentFile = config.age.secrets."ntfy-server-token.env".path;
       NoNewPrivileges = true;
       PrivateTmp = true;
