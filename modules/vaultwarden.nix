@@ -1,4 +1,4 @@
-let
+{pkgs, ...}: let
   domain = "vault.carsonp.net";
   address = "::1";
   port = 8001;
@@ -14,6 +14,8 @@ in {
       SIGNUPS_ALLOWED = false;
     };
   };
+
+  environment.systemPackages = [pkgs.vaultwarden];
 
   systemd.services.vaultwarden.onFailure = ["ntfy-webapp-failure@%n.service"];
 
