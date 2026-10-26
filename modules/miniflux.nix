@@ -15,8 +15,6 @@ in {
     };
   };
 
-  systemd.services.miniflux.onFailure = ["ntfy-webapp-failure@%n.service"];
-
   services.nginx.virtualHosts.${domain} = {
     useACMEHost = "carsonp.net";
     forceSSL = true;

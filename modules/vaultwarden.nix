@@ -17,8 +17,6 @@ in {
 
   environment.systemPackages = [pkgs.vaultwarden];
 
-  systemd.services.vaultwarden.onFailure = ["ntfy-webapp-failure@%n.service"];
-
   services.nginx.virtualHosts.${domain} = {
     useACMEHost = "carsonp.net";
     forceSSL = true;
