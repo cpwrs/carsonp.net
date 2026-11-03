@@ -9,6 +9,7 @@ let
 in {
   "secrets/blog.env.age".publicKeys = all;
   "secrets/hetzner.env.age".publicKeys = all;
+  "secrets/anki-password.age".publicKeys = all;
 
   # Only developers need ip to deploy.
   "secrets/ip.age".publicKeys = carsons;
