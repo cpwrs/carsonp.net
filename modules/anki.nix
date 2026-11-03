@@ -1,7 +1,7 @@
 {config, ...}: let
   domain = "anki.carsonp.net";
   address = "::1";
-  port = 8004;
+  port = 8003;
 in {
   age.secrets."anki-password".file = ./../secrets/anki-password.age;
 
@@ -13,7 +13,7 @@ in {
     users = [
       {
         username = "carson";
-        passwordFile = config.age.secrets."anki-password";
+        passwordFile = config.age.secrets."anki-password".path;
       }
     ];
   };
@@ -22,7 +22,7 @@ in {
     useACMEHost = "carsonp.net";
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://[::1]:${port}";
+      proxyPass = "http://[${address}]:${toString port}";
       recommendedProxySettings = true;
     };
   };

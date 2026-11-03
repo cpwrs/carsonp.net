@@ -8,6 +8,7 @@ All apps are accessible under the `carsonp.net` domain behind an Nginx reverse p
 - `carsonp.net` -> My [blog](https://github.com/cpwrs/blog) on `[::1]:8000`
 - `vault.carsonp.net` -> [vaultwarden](https://github.com/dani-garcia/vaultwarden) on `[::1]:8001`
 - `rss.carsonp.net` -> [miniflux](https://miniflux.app) on `[::1]:8002`
+- `anki.carsonp.net` -> [Anki sync server](https://docs.ankiweb.net/manual/sync-server) on `[::1]:8003`
 - `*.carsonp.net` -> returns 404
 
 ### TLS Certification
